@@ -10,17 +10,19 @@ sess = requests.Session()
 
 def authentication():
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    if os.path.isfile(os.path.join(CONFIG_FOLDER, "auth")):
+    auth_path = os.path.join(CONFIG_FOLDER, "auth")
+    username, password = None, None
+    if os.path.isfile(auth_path):
         print("Már bejelentkezet. Kiván másik felhasználóba átjelentkezni? [y/N]")
         if input().lower() == "y":
-            os.remove(os.path.join(CONFIG_FOLDER, "auth"))
-            print("felhasználónév:")
-            username = input()
-            print("jelszó:")
-            password = input()
-            auth_path = os.path.join(CONFIG_FOLDER, "auth")
-            with open(auth_path, "wb") as f:
-                f.write(f"{username}\n{password}".encode())
+            os.remove(auth_path)
+    if not os.path.isfile(auth_path):
+        print("felhasználónév:")
+        username = input()
+        print("jelszó:")
+        password = input()
+        with open(auth_path, "wb") as f:
+            f.write(f"{username}\n{password}".encode())
     return username, password
 
 
@@ -28,15 +30,17 @@ def authentication():
 
 def upload(files):
     auth_path = os.path.join(CONFIG_FOLDER, "auth")
+    username, password = None, None
     if not os.path.isfile(auth_path):
-        authentication()
+        username, password = authentication()
     try:
         with open(auth_path, "rb") as f:
-            username, password = f.read().decode().split("\n")
-    except FileNotFoundError:
-        username,password = authentication()
+            username, password = f.read().decode().strip().split("\n")
     except Exception as e:
         print(f"Nem várt hiba történt: {e}")
+        exit(1)
+    if not username or not password:
+        print("Hiányzó hitelesítő adatok.")
         exit(1)
 
 
@@ -63,25 +67,38 @@ def upload(files):
     for file in files[2:]:
         title = os.path.basename(file)
         title = title[:title.rfind(".")]
-        file_ = {"file": open(file, "rb")}
+
 
         response = sess.get(url)
         if response.status_code != 200:
             print(f"Hiba történt az oldal lekérése közben: {response.status_code}")
             exit(1)
         soup = BeautifulSoup(response.text, "html.parser")
-        file_hash_input = soup.find("input", {"name": "upload_data[file_hash]"})
-        if file_hash_input and "value" in file_hash_input.attrs:
-            file_hash = file_hash_input["value"]
-
-        user_id_input = soup.find("input", {"name": "upload_data[user_id]"})
-        if user_id_input and "value" in user_id_input.attrs:
-            user_id = user_id_input["value"]
-
-        response = sess.post(url, data={"FILE_HASH": file_hash}, files=file_)
-        if response.status_code != 200:
-            print("Nem sikerült a videót feltölteni.")
+        try:
+            file_hash_input = soup.find("input", {"name": "upload_data[file_hash]"})
+            file_hash = file_hash_input["value"] if file_hash_input and "value" in file_hash_input.attrs else None
+            
+            user_id_input = soup.find("input", {"name": "upload_data[user_id]"})
+            user_id = user_id_input["value"] if user_id_input and "value" in user_id_input.attrs else None
+        except AttributeError:
+            print("Hiba az oldalelemek feldolgozásakor.")
             exit(1)
+        if not file_hash or not user_id:
+            print("A feltöltéshez szükséges adatok hiányoznak.")
+            exit(1)
+        url2 = f"https://upload.indavideo.hu/upload.php?FILE_HASH={file_hash}&UID={user_id}&isIframe=1"
+
+        with open(file, "rb") as opened_file:
+            file_ = {"file": opened_file}
+            response = sess.post(url2, files={
+                "FILE_HASH": (None, file_hash),
+                "Filedata": (os.path.basename(file), opened_file, "video/mp4")
+            })
+            if response.status_code != 200:
+                print("Nem sikerült a videót feltölteni.")
+                exit(1)
+
+
         response = sess.post(url, data={
             "upload_data[file_hash]": file_hash,
             "upload_data[parent_id]": "0",
@@ -110,14 +127,23 @@ def upload(files):
         })
         if response.status_code != 200:
             print("Nem sikerült elküldeni az ürlapot.")
-        response = sess.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
-        video_link_input = soup.find("div", {"class": "video_link"}).find("input",
-                                                                          {"type": "text", "readonly": "readonly"})
-        if video_link_input and "value" in video_link_input.attrs:
-            link = video_link_input["value"]
-            print(f"Videó URL: {link}")
+        video_link_div = soup.find("div", {"class": "video_link"})
+        if not video_link_div:
+            print("Hiba: Nem található 'video_link' osztályú div az oldalon.")
+            return
 
+        video_link_input_elems = video_link_div.find("input", {"type": "text"})
+        if not video_link_input_elems:
+            print("Hiba: A 'video_link' div nem tartalmaz input mezőt.")
+            return
+
+        if "value" in video_link_input_elems.attrs:
+            link = video_link_input_elems["value"]
+            print(f"Videó URL: {link}")
+        else:
+            print("Hiba: Az input mezőben nincs 'value' attribútum.")
+    return
 
 
 
