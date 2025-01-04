@@ -18,13 +18,28 @@ def authentication():
             auth_path = os.path.join(CONFIG_FOLDER, "auth")
             with open(auth_path, "wb") as f:
                 f.write(f"{username}\n{password}".encode())
-            return
-        return
     return None
 
+def login():
+    auth_path = os.path.join(CONFIG_FOLDER, "auth")
+    if not os.path.isfile(auth_path):
+        authentication()
+    with open(auth_path, "rb") as f:
+        username, password = f.read().decode().split("\n")
 
 
+    response = requests.post(
+        "https://daemon.indapass.hu/http/login",
+        data={"username": username, "password": password,
+              "partner_id": "indavideo", "redirect_to": "//indavideo.hu/login",
+              "autologin": "on"},
+    )
+    print(response.cookies)
+    return None
 
+def upload():
+    login()
+    return None
 
 
 
@@ -37,6 +52,7 @@ def main():
         authentication()
         return
     elif sys.argv[1] == "upload":
+        upload()
         return
 
 
