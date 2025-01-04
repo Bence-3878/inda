@@ -81,7 +81,23 @@ def upload(files):
 
 
     url = "https://upload.indavideo.hu/"
+    
+    grouped_files = []
+    current_file = []
+    
     for file in files[2:]:
+        if os.path.splitext(file)[1]:  # Check if there is a file extension
+            if current_file:
+                grouped_files.append(" ".join(current_file))
+                current_file = []
+            grouped_files.append(file)
+        else:
+            current_file.append(file)
+    
+    if current_file:
+        grouped_files.append(" ".join(current_file))
+    
+    for file in grouped_files:
         title = os.path.basename(file)
         title = title[:title.rfind(".")]
 
