@@ -41,7 +41,8 @@ def upload(files):
 
 
     try:
-        response = requests.post("https://daemon.indapass.hu/http/login",
+        response = sess.get("https://indavideo.hu/login")
+        response = sess.post("https://daemon.indapass.hu/http/login",
                                  data={"username": username, "password": password
                                      ,"partner_id": "indavideo", "redirect_to": "//indavideo.hu/login"})
     except requests.exceptions.RequestException as e:
@@ -51,29 +52,31 @@ def upload(files):
         print("Sikertelen bejelentkezés.")
         exit(1)
     soup = BeautifulSoup(response.text, "html.parser")
-    error = soup.find("div",{"class": "error"}).text
+    error_element = soup.find("div", {"class": "error"})
+    error = error_element.text if error_element else None
     if error:
         print(error)
         exit(1)
+
+
     url = "https://upload.indavideo.hu/"
     for file in files[2:]:
         title = os.path.basename(file)
         title = title[:title.rfind(".")]
         file_ = {"file": open(file, "rb")}
+
         response = sess.get(url)
         if response.status_code != 200:
             print(f"Hiba történt az oldal lekérése közben: {response.status_code}")
             exit(1)
         soup = BeautifulSoup(response.text, "html.parser")
-        file_hash_input = soup.find("input", {"name": "FILE_HASH"})
-        #if file_hash_input and "value" in file_hash_input.attrs:
-        print(file_hash_input)
-        file_hash = file_hash_input["value"]
-        print(file_hash)
+        file_hash_input = soup.find("input", {"name": "upload_data[file_hash]"})
+        if file_hash_input and "value" in file_hash_input.attrs:
+            file_hash = file_hash_input["value"]
+
         user_id_input = soup.find("input", {"name": "upload_data[user_id]"})
-        #if user_id_input and "value" in user_id_input.attrs:
-        user_id = user_id_input["value"]
-        print(user_id)
+        if user_id_input and "value" in user_id_input.attrs:
+            user_id = user_id_input["value"]
 
         response = sess.post(url, data={"FILE_HASH": file_hash}, files=file_)
         if response.status_code != 200:
