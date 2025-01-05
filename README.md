@@ -14,6 +14,8 @@ vagy letölteni az alábbi [weboldaloról](https://www.python.org/downloads/) az
 > pip install requests
 
 szükséges python csomagok telepítése
+
+**A rendszer ujra inditása szükséges**
 ## Használat
 
 ### 1. Be kell lépni az inda fiókodba
