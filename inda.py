@@ -1,10 +1,27 @@
+# verzió: béta 1.1
+
 import os
 import sys
-
+import platform
 import requests
 from bs4 import BeautifulSoup
 
-CONFIG_FOLDER = os.path.join(os.path.expanduser("~"), ".config", "inda")
+def get_config_folder():
+    system = platform.system()
+
+    if system == "Windows":
+        # Az AppData/Local könyvtárat használja Windows rendszeren
+        return os.path.join(os.getenv('APPDATA'), "inda")
+    elif system == "Darwin":  # macOS esetében
+        # A felhasználói könyvtár alatti "Library/Application Support" használata
+        return os.path.join(os.path.expanduser("~"), "Library", "Application Support", "inda")
+    else:  # Linux (vagy egyéb Unix rendszerek)
+        # A szabványos .config könyvtárat használja
+        return os.path.join(os.path.expanduser("~"), ".config", "inda")
+
+
+
+CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
@@ -140,7 +157,7 @@ def upload(files):
 
         if "value" in video_link_input_elems.attrs:
             link = video_link_input_elems["value"]
-            print(f"Videó URL: {link}")
+            print(f"Videó Link: {link}")
         else:
             print("Hiba: Az input mezőben nincs 'value' attribútum.")
     return
