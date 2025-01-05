@@ -1,4 +1,4 @@
-# verzió: béta 1.1
+# verzió: béta 1.2
 
 import os
 import sys
