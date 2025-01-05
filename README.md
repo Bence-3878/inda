@@ -16,6 +16,9 @@ vagy letölteni az alábbi [weboldaloról](https://www.python.org/downloads/) az
 szükséges python csomagok telepítése
 
 **A rendszer ujra inditása szükséges**
+
+ez után töltsd le fájlt a repoból, vagy add ki a következő parancsot (ha van git a számítógépen)
+> git clone https://github.com/Bence-3878/inda.git
 ## Használat
 
 ### 1. Be kell lépni az inda fiókodba
