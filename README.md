@@ -1,5 +1,5 @@
 # Automata indavideo feltőltő script
-Ez a projekt ahogy a neve is mutatja. Az [indavideo](https://indavideo.hu/) oldalára automatikusan feltőlt a számitógépen tárolt videó fájlokat. Pythonban írodot parancssoros interfészt használ. Multiplatformos mind linuxon mind windowson müködik.
+Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldalára automatikusan feltölti a számitógépen tárolt videó fájlokat. Pythonban íródott parancssoros interfészt használ. Multiplatformos, tehát mind linuxon, mind windowson müködik.
 
 ---
 ## Telepítés
