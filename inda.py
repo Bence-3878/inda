@@ -25,31 +25,26 @@ CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
-def authentication():
-    os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    auth_path = os.path.join(CONFIG_FOLDER, "auth")
-    username, password = None, None
-    if os.path.isfile(auth_path):
-        print("Már bejelentkezet. Kiván másik felhasználóba átjelentkezni? [y/N]")
-        if input().lower() == "y":
-            os.remove(auth_path)
-    if not os.path.isfile(auth_path):
-        print("felhasználónév:")
-        username = input()
-        print("jelszó:")
-        password = input()
-        with open(auth_path, "wb") as f:
-            f.write(f"{username}\n{password}".encode())
-    return username, password
 
 
 
 
 def upload(files):
+    os.makedirs(CONFIG_FOLDER, exist_ok=True)
     auth_path = os.path.join(CONFIG_FOLDER, "auth")
     username, password = None, None
     if not os.path.isfile(auth_path):
-        username, password = authentication()
+        if os.path.isfile(auth_path):
+            print("Már bejelentkezet. Kiván másik felhasználóba átjelentkezni? [y/N]")
+            if input().lower() == "y":
+                os.remove(auth_path)
+        if not os.path.isfile(auth_path):
+            print("felhasználónév:")
+            username = input()
+            print("jelszó:")
+            password = input()
+            with open(auth_path, "wb") as f:
+                f.write(f"{username}\n{password}".encode())
     try:
         with open(auth_path, "rb") as f:
             username, password = f.read().decode().strip().split("\n")
@@ -182,19 +177,11 @@ def upload(files):
 
 
 def main():
-    if len(sys.argv) == 1:
-        print("Használat: python inda.py login"
-              "           python inda.py upload [files]")
+    if len(sys.argv) < 3 or sys.argv[1] != "upload":
+        print("Használata: python inda.py upload [files]")
         return 1
-    elif sys.argv[1] == "login":
-        authentication()
-        return 0
-    elif sys.argv[1] == "upload":
-        if len(sys.argv) == 2:
-            print("Használata: python inda.py upload [files]")
-            return 1
-        upload(sys.argv)
-        return 0
+    upload(sys.argv)
+    return 0
 
 
 
