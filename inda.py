@@ -25,26 +25,17 @@ CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
-
-
-
-
 def upload(files):
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
     auth_path = os.path.join(CONFIG_FOLDER, "auth")
     username, password = None, None
     if not os.path.isfile(auth_path):
-        if os.path.isfile(auth_path):
-            print("Már bejelentkezet. Kiván másik felhasználóba átjelentkezni? [y/N]")
-            if input().lower() == "y":
-                os.remove(auth_path)
-        if not os.path.isfile(auth_path):
-            print("felhasználónév:")
-            username = input()
-            print("jelszó:")
-            password = input()
-            with open(auth_path, "wb") as f:
-                f.write(f"{username}\n{password}".encode())
+        print("felhasználónév:")
+        username = input()
+        print("jelszó:")
+        password = input()
+        with open(auth_path, "wb") as f:
+            f.write(f"{username}\n{password}".encode())
     try:
         with open(auth_path, "rb") as f:
             username, password = f.read().decode().strip().split("\n")
