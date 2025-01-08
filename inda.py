@@ -1,4 +1,4 @@
-# verzió: béta 1.2
+# verzió: béta 1.2.1
 
 import os
 import sys
@@ -41,10 +41,10 @@ def upload(files):
             username, password = f.read().decode().strip().split("\n")
     except Exception as e:
         print(f"Nem várt hiba történt: {e}")
-        exit(1)
+        exit(2)
     if not username or not password:
         print("Hiányzó hitelesítő adatok.")
-        exit(1)
+        exit(3)
 
 
     try:
@@ -54,16 +54,16 @@ def upload(files):
                                      ,"partner_id": "indavideo", "redirect_to": "//indavideo.hu/login"})
     except requests.exceptions.RequestException as e:
         print(f"HTTP kérés hiba: {e}")
-        exit(1)
+        exit(4)
     if response.status_code != 200:
         print("Sikertelen bejelentkezés.")
-        exit(1)
+        exit(5)
     soup = BeautifulSoup(response.text, "html.parser")
     error_element = soup.find("div", {"class": "error"})
     error = error_element.text if error_element else None
     if error:
         print(error)
-        exit(1)
+        exit(6)
 
 
     url = "https://upload.indavideo.hu/"
@@ -91,7 +91,7 @@ def upload(files):
         response = sess.get(url)
         if response.status_code != 200:
             print(f"Hiba történt az oldal lekérése közben: {response.status_code}")
-            exit(1)
+            exit(7)
         soup = BeautifulSoup(response.text, "html.parser")
         try:
             file_hash_input = soup.find("input", {"name": "upload_data[file_hash]"})
@@ -101,10 +101,10 @@ def upload(files):
             user_id = user_id_input["value"] if user_id_input and "value" in user_id_input.attrs else None
         except AttributeError:
             print("Hiba az oldalelemek feldolgozásakor.")
-            exit(1)
+            exit(8)
         if not file_hash or not user_id:
             print("A feltöltéshez szükséges adatok hiányoznak.")
-            exit(1)
+            exit(9)
         url2 = f"https://upload.indavideo.hu/upload.php?FILE_HASH={file_hash}&UID={user_id}&isIframe=1"
 
         with open(file, "rb") as opened_file:
@@ -115,7 +115,7 @@ def upload(files):
             })
             if response.status_code != 200:
                 print("Nem sikerült a videót feltölteni.")
-                exit(1)
+                exit(10)
 
 
         response = sess.post(url, data={
