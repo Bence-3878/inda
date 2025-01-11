@@ -1,4 +1,4 @@
-# verzió: béta 1.2.1
+# verzió: béta 1.3
 
 import os
 import sys
@@ -29,6 +29,15 @@ def upload(files):
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
     auth_path = os.path.join(CONFIG_FOLDER, "auth")
     username, password = None, None
+    config_path = os.path.join(CONFIG_FOLDER, "config")
+    if not os.path.isfile(config_path):
+        config()
+    try:
+        with open(config_path, "rb") as f:
+            tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+    except Exception as e:
+        print(f"Nem várt hiba történt: {e}")
+        exit(11)
     if not os.path.isfile(auth_path):
         print("felhasználónév:")
         username = input()
@@ -126,9 +135,9 @@ def upload(files):
             "upload_data[pushToFb]": "",
             "upload_data[title]": title,
             "upload_data[description]": "",
-            "upload_data[tags]": "Anime,",
-            "upload_data[isPrivate]": "0",
-            "upload_data[isUnlisted]": "1",
+            "upload_data[tags]": tags,
+            "upload_data[isPrivate]": isPrivate,
+            "upload_data[isUnlisted]": isUnlisted,
             "upload_data[is_commentable]": "on",
             "upload_data[channels][37]": "37",
             "upload_data[preset_title]": "",
@@ -164,10 +173,75 @@ def upload(files):
             print("Hiba: Az input mezőben nincs 'value' attribútum.")
     return
 
+def config():
+    os.makedirs(CONFIG_FOLDER, exist_ok=True)
+    config_path = os.path.join(CONFIG_FOLDER, "config")
+    if os.path.isfile(config_path):
+        n = None
+        while n != "3":
+            print("(1) list\n(2) edit\n(3) exit")
+            n = input()
+            if n == "1":
+                with open(config_path, "rb") as f:
+                    tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+                print(f"Címkék: {tags}\n")
+                if isPrivate == "1" and isUnlisted == "0":
+                    print("Láthatoség: Privált")
+                if isPrivate == "0" and isUnlisted == "1":
+                    print("Láthatoség: Nem listázot")
+                if isPrivate == "0" and isUnlisted == "0":
+                    print("Láthatoség: Publikus")
+
+            elif n == "2":
+                with open(config_path, "rb") as f:
+                    tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+                print("Címkék: ")
+                tags = input()
+                print("Láthatoség: (1) Publikus\n"
+                      "            (2) Nem listázot\n"
+                      "            (3) Privált")
+                l = input()
+                if l == "1":
+                    isPrivate  = "0"
+                    isUnlisted = "0"
+                elif l == "2":
+                    isPrivate  = "0"
+                    isUnlisted = "1"
+                elif l == "3":
+                    isPrivate  = "1"
+                    isUnlisted = "0"
+                with open(config_path, "wb") as f:
+                    f.write(f"{tags}\n{isPrivate}\n{isUnlisted}".encode())
+    else:
+        with open(config_path, "wb") as f:
+            print("Alapértemezet beállításokat kiván használni? [Y/n]")
+            if input().lower() == "n":
+                print("Címkék: ")
+                tags = input()
+                print("Láthatoség: (1) Publikus\n"
+                      "            (2) Nem listázot\n"
+                      "            (3) Privált")
+                l = input()
+                if l == "1":
+                    isPrivate = "0"
+                    isUnlisted = "0"
+                elif l == "2":
+                    isPrivate = "0"
+                    isUnlisted = "1"
+                elif l == "3":
+                    isPrivate = "1"
+                    isUnlisted = "0"
+                with open(config_path, "wb") as f:
+                    f.write(f"{tags}\n{isPrivate}\n{isUnlisted}".encode())
+            else:
+                f.write("Anime,\n0\n1".encode())
 
 
 
 def main():
+    if sys.argv[1] == "config":
+        config()
+        return 0
     if len(sys.argv) < 3 or sys.argv[1] != "upload":
         print("Használata: python inda.py upload [files]")
         return 1
