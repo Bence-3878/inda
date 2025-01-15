@@ -15,23 +15,27 @@ Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldal
 A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen még telepítve akkor [innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
 
 Terminálba ki kell adni az alábbi parancsot:
-> winget install python git.git
-
+```bat
+winget install python git.git
+```
 A script müködéséhez szükséges az alábbi python csomagok telepítése:
-> pip install bs4
-> 
-> pip install requests
-
+```bat
+pip install bs4
+pip install requests
+```
 **Ezek után indítsd újra a számítógépedet**
 
 Repozitori klonozása:
-> git clone https://github.com/Bence-3878/inda.git
-
+```bat
+git clone https://github.com/Bence-3878/inda.git
+```
 ## Használat
 
 az egész script használata az alábbi parancs
 a terminál megnyitásakor a
-
-> python .\inda\inda.py upload [files]
-
-
+```bash
+python .\inda\inda.py upload [files]
+```
+## Licens
+Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
+További részletekért tekintsd meg a LICENSE fájlt.
