@@ -22,12 +22,9 @@ A script müködéséhez szükséges az alábbi python csomagok telepítése:
 > 
 > pip install requests
 
-
 **Ezek után indítsd újra a számítógépedet**
 
-
-
-repozitori klonozása
+Repozitori klonozása:
 > git clone https://github.com/Bence-3878/inda.git
 
 ## Használat
@@ -35,6 +32,6 @@ repozitori klonozása
 az egész script használata az alábbi parancs
 a terminál megnyitásakor a
 
-> python /path/to/file/inda.py upload [files]
+> python .\inda\inda.py upload [files]
 
 
