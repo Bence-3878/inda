@@ -1,4 +1,19 @@
+#!/bin/bash
 # verzió: béta 1.3
+# Script neve: myscript.sh
+# Copyright (C) 2025 [Saját Neved]
+#
+# Ez a program szabad szoftver: terjeszthető és/vagy módosítható a
+# Free Software Foundation által közzétett GNU General Public License
+# (GPL) 3-as verziója vagy (tetszés szerint) bármely későbbi verziója
+# feltételei szerint.
+#
+# Ez a program remélhetőleg hasznos lesz, de minden GARANCIA NÉLKÜL,
+# még az eladhatóságra vagy egy adott célra való alkalmasságra sem.
+# Lásd a GNU General Public License-t további részletekért.
+#
+# A GNU General Public License másolatát meg kellett kapnod a programmal együtt.
+# Ha nem, látogass el a <https://www.gnu.org/licenses/> oldalra.
 
 import os
 import sys
