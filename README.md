@@ -7,7 +7,7 @@ Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldal
 - minden legépelt sor vagy parancs után üss egy entert.
 - a parancsokat egyenként kell kiadni
 - a telepítésnél minden esetben üss [Y]es-t
-- cd parancs segitségével lehet parancssorban navikálni a fájl rendszerben
+- cd parancs segitségével lehet parancssorban navigálni a fájl rendszerben
 - a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
 
 ## Telepítés
