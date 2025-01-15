@@ -1,4 +1,5 @@
-# verzió: béta 1.3
+#!/usr/bin/python3
+# verzió: alfa 2.0
 
 import os
 import sys
@@ -25,13 +26,13 @@ CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
-def upload(files):
+def upload_inda(files):
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    auth_path = os.path.join(CONFIG_FOLDER, "auth")
+    auth_path = os.path.join(CONFIG_FOLDER, "auth_inda")
     username, password = None, None
-    config_path = os.path.join(CONFIG_FOLDER, "config")
+    config_path = os.path.join(CONFIG_FOLDER, "config_inda")
     if not os.path.isfile(config_path):
-        config()
+        config_inda()
     try:
         with open(config_path, "rb") as f:
             tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
@@ -173,9 +174,12 @@ def upload(files):
             print("Hiba: Az input mezőben nincs 'value' attribútum.")
     return
 
-def config():
+def upload_videa(files):
+    pass
+
+def config_inda():
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    config_path = os.path.join(CONFIG_FOLDER, "config")
+    config_path = os.path.join(CONFIG_FOLDER, "config_inda")
     if os.path.isfile(config_path):
         n = None
         while n != "3":
@@ -236,17 +240,56 @@ def config():
             else:
                 f.write("Anime,\n0\n1".encode())
 
-
+def config_videa():
+    os.makedirs(CONFIG_FOLDER, exist_ok=True)
+    config_path = os.path.join(CONFIG_FOLDER, "config_videa")
+    if os.path.isfile(config_path):
+        n = None
+        while n != "3":
+            print("(1) list\n(2) edit\n(3) exit")
+            n = input()
+            if n == "1":
+                with open(config_path, "rb") as f:
+                    pass
+    else:
+        with open(config_path, "wb") as f:
+            pass
 
 def main():
-    if sys.argv[1] == "config":
-        config()
+    if sys.argv[1] == "-v" or sys.argv[1] == "--version":
+        print("alfa 2.0")
         return 0
-    if len(sys.argv) < 3 or sys.argv[1] != "upload":
-        print("Használata: python inda.py upload [files]")
-        return 1
-    upload(sys.argv)
-    return 0
+    if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+        return 0
+
+    if sys.argv[0] == "inda.py":
+        if sys.argv[1] == "-c" or sys.argv[1] == "--config":
+            config_inda()
+            return 0
+        if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
+            upload_inda(sys.argv)
+            return 0
+
+    if sys.argv[0] == "videa.py":
+        if sys.argv[1] == "-c" or sys.argv[1] == "--config":
+            config_videa()
+            return 0
+        if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
+            upload_videa(sys.argv)
+            return 0
+
+    if sys.argv[0] == "all.py":
+        if sys.argv[1] == "-c" or sys.argv[1] == "--config":
+            config_inda()
+            config_videa()
+            return 0
+        if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
+            upload_inda(sys.argv)
+            upload_videa(sys.argv)
+            return 0
+
+    return 1
+
 
 
 
