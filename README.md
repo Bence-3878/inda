@@ -4,10 +4,13 @@ Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldal
 ---
 ## Telepítés
 ### windows
-A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen már telepítva akkor [innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
+A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen még telepítve akkor [innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
 
 Terminálba ki kell adni az alábbi parancsot:
 > winget install python
+
+megjegyzés: a telepítés során felmerülő választási lehetőségeknél mindig írd be a yes-t.
+Minden legépelt sor vagy parancs után üss egy entert.
 
 vagy letölteni az alábbi [weboldaloról](https://www.python.org/downloads/) az aktuális verziót.
 
