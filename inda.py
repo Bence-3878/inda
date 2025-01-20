@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# verzió: alfa 2.0
+# verzió: beta 1.3
 # Script neve: inda.py
 # Copyright (C) 2025 [Saját Neved]
 #
