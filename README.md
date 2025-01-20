@@ -20,8 +20,7 @@ winget install python git.git
 ```
 A script müködéséhez szükséges az alábbi python csomagok telepítése:
 ```bat
-pip install bs4
-pip install requests
+pip install bs4 requests
 ```
 **Ezek után indítsd újra a számítógépedet**
 
