@@ -1,6 +1,6 @@
-#!/bin/bash
-# verzió: béta 1.3
-# Script neve: myscript.sh
+#!/usr/bin/python3
+# verzió: alfa 2.0
+# Script neve: inda.py
 # Copyright (C) 2025 [Saját Neved]
 #
 # Ez a program szabad szoftver: terjeszthető és/vagy módosítható a
