@@ -1,34 +1,41 @@
 # Automata indavideo feltőltő script
-Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldalára automatikusan feltölti a számitógépen tárolt videó fájlokat. Pythonban íródott parancssoros interfészt használ. Multiplatformos, tehát mind linuxon, mind windowson müködik.
+Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldalára automatikusan feltölti a számitógépen tárolt videó fájlokat. Python programozási nyelven íródott parancssoros alkalmazás, tehát nincs grafikus felület hozzá. Multiplatformos, tehát mind linuxon, mind windowson müködik. Nagy esélyel MecOS alatt is müködik, sajnos hardver hiányában ezt nem tudtam tesztelni.
 
 ---
+## Pár tipp a terminál használatához
+- az itt lévő parancsokat másold ki és illeszd be a terminálba
+- minden legépelt sor vagy parancs után üss egy entert.
+- a parancsokat egyenként kell kiadni
+- a telepítésnél minden esetben üss [Y]es-t
+- cd parancs segitségével lehet parancssorban navigálni a fájl rendszerben
+- a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
+
 ## Telepítés
 ### windows
+A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen még telepítve akkor [innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
+
 Terminálba ki kell adni az alábbi parancsot:
-> winget install python
+```bat
+winget install python git.git
+```
+A script müködéséhez szükséges az alábbi python csomagok telepítése:
+```bat
+pip install bs4
+pip install requests
+```
+**Ezek után indítsd újra a számítógépedet**
 
-vagy letölteni az alábbi [weboldaloról](https://www.python.org/downloads/) az aktuális verziót.
-
-> pip install bs4
-> 
-> pip install requests
-
-szükséges python csomagok telepítése
-
-**A rendszer ujra inditása szükséges**
-
-ez után töltsd le fájlt a repoból, vagy add ki a következő parancsot (ha van git a számítógépen)
-> git clone https://github.com/Bence-3878/inda.git
+Repozitori klonozása:
+```bat
+git clone https://github.com/Bence-3878/inda.git
+```
 ## Használat
 
-### 1. Be kell lépni az inda fiókodba
-
-> python inda.py login
-
-Ez után parancssorban megkell adni a bejelentkezési adatokat felhasználónév jelszó. A számitógepen van csak tárolva.
-
-### 2. videó feltöltése
-
-> python inda.py upload [files]
-
-a végére a feltölteni kivánt fájlokat kell írni
+az egész script használata az alábbi parancs
+a terminál megnyitásakor a
+```bash
+python .\inda\inda.py upload [files]
+```
+## Licens
+Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
+További részletekért tekintsd meg a LICENSE fájlt.
