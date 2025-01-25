@@ -53,41 +53,45 @@ def upload(files):
     except Exception as e:
         print(f"Nem várt hiba történt: {e}")
         exit(11)
-    if not os.path.isfile(auth_path):
-        print("felhasználónév:")
-        username = input()
-        print("jelszó:")
-        password = input()
-        with open(auth_path, "wb") as f:
-            f.write(f"{username}\n{password}".encode())
-    try:
-        with open(auth_path, "rb") as f:
-            username, password = f.read().decode().strip().split("\n")
-    except Exception as e:
-        print(f"Nem várt hiba történt: {e}")
-        exit(2)
-    if not username or not password:
-        print("Hiányzó hitelesítő adatok.")
-        exit(3)
+
+    siker = False
+    while not siker:
+        if not os.path.isfile(auth_path) or not siker:
+            print("Email Cím:")
+            username = input()
+            print("Jelszó:")
+            password = input()
+            with open(auth_path, "wb") as f:
+                f.write(f"{username}\n{password}".encode())
+        try:
+            with open(auth_path, "rb") as f:
+                username, password = f.read().decode().strip().split("\n")
+        except Exception as e:
+            print(f"Nem várt hiba történt: {e}")
+            exit(2)
+        if not username or not password:
+            print("Hiányzó hitelesítő adatok.")
+            exit(3)
 
 
-    try:
-        response = sess.get("https://indavideo.hu/login")
-        response = sess.post("https://daemon.indapass.hu/http/login",
-                                 data={"username": username, "password": password
-                                     ,"partner_id": "indavideo", "redirect_to": "//indavideo.hu/login"})
-    except requests.exceptions.RequestException as e:
-        print(f"HTTP kérés hiba: {e}")
-        exit(4)
-    if response.status_code != 200:
-        print("Sikertelen bejelentkezés.")
-        exit(5)
-    soup = BeautifulSoup(response.text, "html.parser")
-    error_element = soup.find("div", {"class": "error"})
-    error = error_element.text if error_element else None
-    if error:
-        print(error)
-        exit(6)
+        try:
+            response = sess.get("https://indavideo.hu/login")
+            response = sess.post("https://daemon.indapass.hu/http/login",
+                                     data={"username": username, "password": password
+                                         ,"partner_id": "indavideo", "redirect_to": "//indavideo.hu/login"})
+        except requests.exceptions.RequestException as e:
+            print(f"HTTP kérés hiba: {e}")
+            exit(4)
+        if response.status_code != 200:
+            print("Sikertelen bejelentkezés.")
+            exit(5)
+        soup = BeautifulSoup(response.text, "html.parser")
+        error_element = soup.find("div", {"class": "error"})
+        error = error_element.text if error_element else None
+        if error:
+            print(error)
+        else:
+            siker = True
 
 
     url = "https://upload.indavideo.hu/"
@@ -229,7 +233,8 @@ def config():
                     f.write(f"{tags}\n{isPrivate}\n{isUnlisted}".encode())
     else:
         with open(config_path, "wb") as f:
-            print("Alapértemezet beállításokat kiván használni? [Y/n]")
+            print("Alapértemezet beállításokat kiván használni? [Y/n]\n"
+                  "(Az alapértemezet beállítások az AnimeDrive csapat részére készült)")
             if input().lower() == "n":
                 print("Címkék: ")
                 tags = input()
