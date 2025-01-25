@@ -1,5 +1,19 @@
 #!/usr/bin/python3
 # verzió: alfa 2.0
+# Script neve: inda.py
+# Copyright (C) 2025 [Saját Neved]
+#
+# Ez a program szabad szoftver: terjeszthető és/vagy módosítható a
+# Free Software Foundation által közzétett GNU General Public License
+# (GPL) 3-as verziója vagy (tetszés szerint) bármely későbbi verziója
+# feltételei szerint.
+#
+# Ez a program remélhetőleg hasznos lesz, de minden GARANCIA NÉLKÜL,
+# még az eladhatóságra vagy egy adott célra való alkalmasságra sem.
+# Lásd a GNU General Public License-t további részletekért.
+#
+# A GNU General Public License másolatát meg kellett kapnod a programmal együtt.
+# Ha nem, látogass el a <https://www.gnu.org/licenses/> oldalra.
 
 import os
 import sys
@@ -29,8 +43,10 @@ sess = requests.Session()
 def upload_inda(files):
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
     auth_path = os.path.join(CONFIG_FOLDER, "auth_inda")
-    username, password = None, None
     config_path = os.path.join(CONFIG_FOLDER, "config_inda")
+    username, password = None, None
+
+
     if not os.path.isfile(config_path):
         config_inda()
     try:
@@ -39,6 +55,8 @@ def upload_inda(files):
     except Exception as e:
         print(f"Nem várt hiba történt: {e}")
         exit(11)
+
+
     if not os.path.isfile(auth_path):
         print("felhasználónév:")
         username = input()
@@ -175,7 +193,59 @@ def upload_inda(files):
     return
 
 def upload_videa(files):
-    pass
+    os.makedirs(CONFIG_FOLDER, exist_ok=True)
+    auth_path = os.path.join(CONFIG_FOLDER, "auth_videa")
+    config_path = os.path.join(CONFIG_FOLDER, "config_videa")
+    username, password = None, None
+
+
+    if not os.path.isfile(config_path):
+        config_videa()
+    try:
+        with open(config_path, "rb") as f:
+            pass
+    except Exception as e:
+        print(f"Nem várt hiba történt: {e}")
+        exit(12)
+
+
+    if not os.path.isfile(auth_path):
+        print("felhasználónév:")
+        username = input()
+        print("jelszó:")
+        password = input()
+        with open(auth_path, "wb") as f:
+            f.write(f"{username}\n{password}".encode())
+    try:
+        with open(auth_path, "rb") as f:
+            username, password = f.read().decode().strip().split("\n")
+    except Exception as e:
+        print(f"Nem várt hiba történt: {e}")
+        exit(13)
+    if not username or not password:
+        print("Hiányzó hitelesítő adatok.")
+        exit(14)
+
+    try:
+        response = sess.get("https://videa.hu/belepes")
+        response = sess.post("https://videa.hu/interface?logcmd=tryLoginByRequest",
+                                json={"cmd":"tryLoginByRequest","userid":username,"password":password}
+                                 )
+    except requests.exceptions.RequestException as e:
+        print(f"HTTP kérés hiba: {e}")
+        exit(15)
+    if response.status_code != 200:
+        print("Sikertelen bejelentkezés.")
+        exit(16)
+    if response.json()["code"] != 0:
+        print("Hibás felhasználónév vagy jelszó")
+        exit(17)
+
+    response = sess.get("https://videa.hu/")
+    soup = BeautifulSoup(response.text, "html.parser")
+
+
+
 
 def config_inda():
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
@@ -187,7 +257,7 @@ def config_inda():
             n = input()
             if n == "1":
                 with open(config_path, "rb") as f:
-                    tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+                    tags, isPrivate, isUnlisted = f.read().decode().strip().split("\n")
                 print(f"Címkék: {tags}\n")
                 if isPrivate == "1" and isUnlisted == "0":
                     print("Láthatoség: Privált")
@@ -198,7 +268,7 @@ def config_inda():
 
             elif n == "2":
                 with open(config_path, "rb") as f:
-                    tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+                    tags, isPrivate, isUnlisted = f.read().decode().strip().split("\n")
                 print("Címkék: ")
                 tags = input()
                 print("Láthatoség: (1) Publikus\n"
@@ -255,16 +325,46 @@ def config_videa():
         with open(config_path, "wb") as f:
             pass
 
+def list_inda(profil):
+    response = sess.get(f"https://indavideo.hu/profile/{profil}/all-videos#")
+    if response.status_code != 200:
+        exit(18)
+
+    return
+
+def list_inda_my():
+    pass
+
 def main():
     if sys.argv[1] == "-v" or sys.argv[1] == "--version":
         print("alfa 2.0")
+
+    if sys.argv[1] == "-r" or sys.argv[1] == "--reset":
+        config_path = os.path.join(CONFIG_FOLDER, "config")
+        auth_path = os.path.join(CONFIG_FOLDER, "auth")
+        if os.path.isfile(config_path):
+            os.remove(config_path)
+        if os.path.isfile(auth_path):
+            os.remove(auth_path)
         return 0
+    if sys.argv[1] == "-u" or sys.argv[1] == "--update":
+        inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
+        os.chdir(inda_folder_path)
+        os.system("git pull >nul 2>&1")
+        return 0
+
     if sys.argv[1] == "-h" or sys.argv[1] == "--help":
         return 0
 
-    if sys.argv[0] == "inda.py":
+    if sys.argv[0].endswith("inda.py"):
         if sys.argv[1] == "-c" or sys.argv[1] == "--config":
             config_inda()
+            return 0
+        if sys.argv[1] == "-l" or sys.argv[1] == "--list":
+            if len(sys.argv) < 3:
+                list_inda_my()
+            else:
+                list_inda(sys.argv[2])
             return 0
         if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
             upload_inda(sys.argv)
