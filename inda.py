@@ -335,8 +335,15 @@ def main():
     if sys.argv[1] == "reset":
         config_path = os.path.join(CONFIG_FOLDER, "config")
         auth_path = os.path.join(CONFIG_FOLDER, "auth")
-        os.remove(config_path)
-        os.remove(auth_path)
+        if os.path.isfile(config_path):
+            os.remove(config_path)
+        if os.path.isfile(auth_path):
+            os.remove(auth_path)
+        return 0
+    if sys.argv[1] == "update":
+        inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
+        os.chdir(inda_folder_path)
+        os.system("git pull >nul 2>&1")
         return 0
     if sys.argv[1] == "config":
         config()
