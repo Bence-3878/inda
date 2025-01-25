@@ -330,14 +330,16 @@ def list_inda(profil):
     if response.status_code != 200:
         exit(18)
 
-    return
-
-def list_inda_my():
-    pass
 
 def main():
-    if sys.argv[1] == "-v" or sys.argv[1] == "--version":
-        print("alfa 2.0")
+    if sys.argv[1] == "reset":
+        config_path = os.path.join(CONFIG_FOLDER, "config")
+        auth_path = os.path.join(CONFIG_FOLDER, "auth")
+        os.remove(config_path)
+        os.remove(auth_path)
+        return 0
+    if sys.argv[1] == "config":
+        config()
         return 0
     if sys.argv[1] == "-h" or sys.argv[1] == "--help":
         return 0
