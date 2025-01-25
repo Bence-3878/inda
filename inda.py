@@ -254,6 +254,12 @@ def config():
 
 
 def main():
+    if sys.argv[1] == "reset":
+        config_path = os.path.join(CONFIG_FOLDER, "config")
+        auth_path = os.path.join(CONFIG_FOLDER, "auth")
+        os.remove(config_path)
+        os.remove(auth_path)
+        return 0
     if sys.argv[1] == "config":
         config()
         return 0
