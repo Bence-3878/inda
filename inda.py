@@ -338,7 +338,21 @@ def list_inda_my():
 def main():
     if sys.argv[1] == "-v" or sys.argv[1] == "--version":
         print("alfa 2.0")
+
+    if sys.argv[1] == "-r" or sys.argv[1] == "--reset":
+        config_path = os.path.join(CONFIG_FOLDER, "config")
+        auth_path = os.path.join(CONFIG_FOLDER, "auth")
+        if os.path.isfile(config_path):
+            os.remove(config_path)
+        if os.path.isfile(auth_path):
+            os.remove(auth_path)
         return 0
+    if sys.argv[1] == "-u" or sys.argv[1] == "--update":
+        inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
+        os.chdir(inda_folder_path)
+        os.system("git pull >nul 2>&1")
+        return 0
+
     if sys.argv[1] == "-h" or sys.argv[1] == "--help":
         return 0
 
