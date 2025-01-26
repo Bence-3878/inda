@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# verzió: alfa 2.0
+# verzió: alfa 2.1
 # Script neve: inda.py
 # Copyright (C) 2025 [Saját Neved]
 #
@@ -370,7 +370,7 @@ def main():
             upload_inda(sys.argv)
             return 0
 
-    if sys.argv[0] == "videa.py":
+    if sys.argv[0].endswith("videa.py"):
         if sys.argv[1] == "-c" or sys.argv[1] == "--config":
             config_videa()
             return 0
@@ -378,7 +378,7 @@ def main():
             upload_videa(sys.argv)
             return 0
 
-    if sys.argv[0] == "all.py":
+    if sys.argv[0].endswith("all.py"):
         if sys.argv[1] == "-c" or sys.argv[1] == "--config":
             config_inda()
             config_videa()
