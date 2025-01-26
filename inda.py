@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # verzió: beta 1.4
 # Script neve: inda.py
-# Copyright (C) 2025 Pákozdi Bence
+# Copyright (C) 2025 [Saját Neved]
 #
 # Ez a program szabad szoftver: terjeszthető és/vagy módosítható a
 # Free Software Foundation által közzétett GNU General Public License
