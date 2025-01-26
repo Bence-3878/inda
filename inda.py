@@ -21,6 +21,7 @@ import platform
 import requests
 from bs4 import BeautifulSoup
 
+
 def get_config_folder():
     system = platform.system()
 
@@ -35,21 +36,26 @@ def get_config_folder():
         return os.path.join(os.path.expanduser("~"), ".config", "inda")
 
 
-
 CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
+
 def upload(files):
+    # A konfigurációs mappa létrehozása, ha nem létezik
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
     auth_path = os.path.join(CONFIG_FOLDER, "auth")
     username, password = None, None
     config_path = os.path.join(CONFIG_FOLDER, "config")
+
+    # Ellenőrizzük, hogy létezik-e a konfigurációs fájl, ha nem, akkor létrehozzuk
     if not os.path.isfile(config_path):
         config()
+
     try:
+        # Beolvassuk a konfigurációs fájlt, hogy lekérjük a címkéket és láthatósági beállításokat
         with open(config_path, "rb") as f:
-            tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+            tags, isPrivate, isUnlisted = f.read().decode().strip().split("\n")
     except Exception as e:
         print(f"Nem várt hiba történt: {e}")
         exit(11)
@@ -57,6 +63,7 @@ def upload(files):
     siker = False
     while not siker:
         if not os.path.isfile(auth_path) or not siker:
+            # Bekérjük a felhasználói hitelesítő adatokat
             print("Email Cím:")
             username = input()
             print("Jelszó:")
@@ -64,27 +71,34 @@ def upload(files):
             with open(auth_path, "wb") as f:
                 f.write(f"{username}\n{password}".encode())
         try:
+            # Hitelesítő adatokat olvasunk be a fájlból
             with open(auth_path, "rb") as f:
                 username, password = f.read().decode().strip().split("\n")
         except Exception as e:
             print(f"Nem várt hiba történt: {e}")
             exit(2)
+
+        # Felhasználónév vagy jelszó hiánya esetén kilépünk
         if not username or not password:
             print("Hiányzó hitelesítő adatok.")
             exit(3)
 
-
         try:
+            # HTTP kérés segítségével bejelentkezés az Indavideó felületére
             response = sess.get("https://indavideo.hu/login")
             response = sess.post("https://daemon.indapass.hu/http/login",
-                                     data={"username": username, "password": password
-                                         ,"partner_id": "indavideo", "redirect_to": "//indavideo.hu/login"})
+                                 data={"username": username, "password": password,
+                                       "partner_id": "indavideo", "redirect_to": "//indavideo.hu/login"})
         except requests.exceptions.RequestException as e:
             print(f"HTTP kérés hiba: {e}")
             exit(4)
+
+        # Ellenőrizzük, hogy a válasz kódja sikeres-e
         if response.status_code != 200:
             print("Sikertelen bejelentkezés.")
             exit(5)
+
+        # Ellenőrizzük az oldalon, hogy van-e hibát jelző üzenet
         soup = BeautifulSoup(response.text, "html.parser")
         error_element = soup.find("div", {"class": "error"})
         error = error_element.text if error_element else None
@@ -93,29 +107,29 @@ def upload(files):
         else:
             siker = True
 
-
     url = "https://upload.indavideo.hu/"
-    
+
     grouped_files = []
     current_file = []
-    
+
+    # Fájlok csoportosítása bizonyos feltételek szerint
     for file in files[2:]:
-        if os.path.splitext(file)[1]:  # Check if there is a file extension
+        if os.path.splitext(file)[1]:
             if current_file:
                 grouped_files.append(" ".join(current_file))
                 current_file = []
             grouped_files.append(file)
         else:
             current_file.append(file)
-    
+
     if current_file:
         grouped_files.append(" ".join(current_file))
-    
+
     for file in grouped_files:
         title = os.path.basename(file)
         title = title[:title.rfind(".")]
 
-
+        # Oldal lekérése és HTML feldolgozással adatgyűjtés a feltöltéshez
         response = sess.get(url)
         if response.status_code != 200:
             print(f"Hiba történt az oldal lekérése közben: {response.status_code}")
@@ -124,17 +138,21 @@ def upload(files):
         try:
             file_hash_input = soup.find("input", {"name": "upload_data[file_hash]"})
             file_hash = file_hash_input["value"] if file_hash_input and "value" in file_hash_input.attrs else None
-            
+
             user_id_input = soup.find("input", {"name": "upload_data[user_id]"})
             user_id = user_id_input["value"] if user_id_input and "value" in user_id_input.attrs else None
         except AttributeError:
             print("Hiba az oldalelemek feldolgozásakor.")
             exit(8)
+
+        # Feltöltéshez szükséges adatok ellenőrzése
         if not file_hash or not user_id:
             print("A feltöltéshez szükséges adatok hiányoznak.")
             exit(9)
+
         url2 = f"https://upload.indavideo.hu/upload.php?FILE_HASH={file_hash}&UID={user_id}&isIframe=1"
 
+        # Videófájl feltöltése POST kéréssel
         with open(file, "rb") as opened_file:
             file_ = {"file": opened_file}
             response = sess.post(url2, files={
@@ -145,7 +163,7 @@ def upload(files):
                 print("Nem sikerült a videót feltölteni.")
                 exit(10)
 
-
+        # Űrlap adatok elküldése az Indavideó számára
         response = sess.post(url, data={
             "upload_data[file_hash]": file_hash,
             "upload_data[parent_id]": "0",
@@ -174,6 +192,8 @@ def upload(files):
         })
         if response.status_code != 200:
             print("Nem sikerült elküldeni az ürlapot.")
+
+        # Videó link kinyerése és megjelenítése
         soup = BeautifulSoup(response.text, "html.parser")
         video_link_div = soup.find("div", {"class": "video_link"})
         if not video_link_div:
