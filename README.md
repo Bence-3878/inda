@@ -4,22 +4,34 @@ Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldal
 ---
 
 ## Telepítés
-### windows
+### Windows
 A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen még telepítve akkor [innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
 
-Terminálba ki kell adni az alábbi parancsot:
-```bat
+Terminálba ad ki az alábbi parancsokat\
+Szükséges programok telepítése:
+```bash
 winget install python git.git
 ```
 A script müködéséhez szükséges az alábbi python csomagok telepítése:
-```bat
+```bash
 pip install bs4 requests
 ```
 **Ezek után indítsd újra a számítógépedet**
 
 Repozitori klonozása:
-```bat
+```bash
 git clone https://github.com/Bence-3878/inda.git
+```
+
+### Linux
+Nyisd meg a neked szimpatikus terminál emulátort\
+Szükséges programok telepítése:
+```bash
+apt install git
+```
+A script müködéséhez szükséges az alábbi python csomagok telepítése:
+```bash
+pip install bs4 requests
 ```
 ## Használat
 
