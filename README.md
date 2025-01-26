@@ -30,14 +30,7 @@ Nyisd meg a terminált, és futtasd az alábbi parancsot:
 python .\inda\inda.py upload [files]
 ```
 
-- **[files]** helyére a feltölteni kívánt videófájl(ok) pontos elérési útját kell beírni. Ha több fájlt szeretnél
-  feltölteni egyszerre, azokat szóközökkel elválasztva add meg. Példa:
-  ```bash
-  python .\inda\inda.py upload video1.mp4 video2.mp4
-  ```
-- Ügyelj arra, hogy a fájlnevek és elérési utak helyesen legyenek megadva. Ha a videók egy másik mappában találhatók,
-  akkor használd a relatív vagy abszolút útvonalukat.
-- Sikeres futtatás után a script automatikusan feltölti az összes megadott videót az Indavideo oldalára.
+
 
 ## Pár tipp a terminál használatához
 - az itt lévő parancsokat másold ki és illeszd be a terminálba
