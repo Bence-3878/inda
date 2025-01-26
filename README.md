@@ -41,14 +41,18 @@ az AnimeDrive szerkesztőinek készültek, mindenki más számára nem ajánlott
 python $HOME\inda\inda.py config 
 ```
 
-parancs segítségével bármikor modosítani lehet a config-ot
+Parancs segítségével bármikor modosítani lehet a config-ot
 
 ```bash
 python $HOME\inda\inda.py reset
 ```
-az egész programot alaphelyzetbe állítja
+Az egész programot alaphelyzetbe állítja
 
+```bash
+python $HOME\inda\inda.py update
+```
 
+A program frissitése
 ## Terminál használat alapok
 mappa elérési útja szerepel, ahol most is vagyunk. Míg linuxon és Mac-en először balról jobbra haladva a _felhasználónév@gépnév_ látszik,
   amivel akituálisan be vagyunk jelentkezve, és végül a mappa elérési útja, ahol jelenleg a fájl rendszerben tartózkodunk.
