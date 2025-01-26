@@ -1,7 +1,7 @@
 #!/bin/bash
-# verzió: béta 1.3
+# verzió: alfa 2.1
 # Script neve: myscript.sh
-# Copyright (C) 2025 [Saját Neved]
+# Copyright (C) 2025 Pákozdi Bence
 #
 # Ez a program szabad szoftver: terjeszthető és/vagy módosítható a
 # Free Software Foundation által közzétett GNU General Public License
@@ -356,10 +356,10 @@ def list_inda_my():
     pass
 
 def main():
-    if sys.argv[1] == "-v" or sys.argv[1] == "--version":
+    if sys.argv[1] == "version":
         print("alfa 2.1")
 
-    if sys.argv[1] == "-r" or sys.argv[1] == "--reset":
+    if sys.argv[1] == "reset":
         config_path = os.path.join(CONFIG_FOLDER, "config")
         auth_path = os.path.join(CONFIG_FOLDER, "auth")
         if os.path.isfile(config_path):
@@ -367,42 +367,42 @@ def main():
         if os.path.isfile(auth_path):
             os.remove(auth_path)
         return 0
-    if sys.argv[1] == "-u" or sys.argv[1] == "--update":
+    if sys.argv[1] == "update":
         inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
         os.chdir(inda_folder_path)
         os.system("git pull >nul 2>&1")
         return 0
-    if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+    if sys.argv[1] == "help":
         return 0
 
     if sys.argv[0].endswith("inda.py"):
-        if sys.argv[1] == "-c" or sys.argv[1] == "--config":
+        if sys.argv[1] == "config":
             config_inda()
             return 0
-        if sys.argv[1] == "-l" or sys.argv[1] == "--list":
+        if sys.argv[1] == "list":
             if len(sys.argv) < 3:
                 list_inda_my()
             else:
                 list_inda(sys.argv[2])
             return 0
-        if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
+        if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
             upload_inda(sys.argv)
             return 0
 
     if sys.argv[0].endswith("videa.py"):
-        if sys.argv[1] == "-c" or sys.argv[1] == "--config":
+        if sys.argv[1] == "config":
             config_videa()
             return 0
-        if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
+        if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
             upload_videa(sys.argv)
             return 0
 
     if sys.argv[0].endswith("all.py"):
-        if sys.argv[1] == "-c" or sys.argv[1] == "--config":
+        if sys.argv[1] == "config":
             config_inda()
             config_videa()
             return 0
-        if len(sys.argv) >= 3 and (sys.argv[1] == "-u" or sys.argv[1] == "--upload"):
+        if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
             upload_inda(sys.argv)
             upload_videa(sys.argv)
             return 0
