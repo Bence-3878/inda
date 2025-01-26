@@ -36,22 +36,36 @@ pip install bs4 requests
 ```
 ## Használat
 
-Az egész script használata az alábbi parancs:
-Nyisd meg a terminált, és futtasd az alábbi parancsot:
-
+A script legfontosabb és központi parancsa az alábbi:
 ```bash
 python .\inda\inda.py upload [files]
 ```
+A saját könyvtáradban álva kell kiadni ebben a formában a **[files]** helyére a feltölteni kivánt fájlokat kell felsoroni.\
+Az első használat folyamán kérni forja az email cím jelszó párost, és a feltöltési beállítások beállítását. Az alapértelmezet beállítások az AnimeDrive
+szerkeszőinek készültek mindenki más számáza nem ajánlót a használata.
 
+```bash
+python .\inda\inda.py config 
+```
 
-## Pár tipp a terminál használatához
-- az itt lévő parancsokat másold ki és illeszd be a terminálba
-- minden legépelt sor vagy parancs után üss egy entert.
-- a parancsokat egyenként kell kiadni
-- a telepítésnél minden esetben üss [Y]es-t
-- cd parancs segitségével lehet parancssorban navigálni a fájl rendszerben
-- a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
+parancs segítségével bármikor modosítani lehet a configot
 
+```bash
+python .\inda\inda.py reset
+```
+
+az egész programot alaphelyzetbe állítja
+
+## Terminál használat alapok
+Igyekszek általános lírást adni az összes támogatot platformra 
+az esetleges különbségeket majd külön jelzem. Balról jobbra először a 
+felhasználó amivel akituálisan be vagyunk jelentkezve utána az aktuális mappa elérési utja ahol jelenleg a fájl rendszerben tartozkodunk.
+Mindig valamelyik mappa van megnyitva alapértelmezés szerint a terminál megnyilásakor a saját gyökér könyvtáradba kerülsz ahonnan a jól ismert mappák 
+mint a képek, dokomentomuk, stb. nyilik. A script amenyiben mindent jól hajtotál végre a saját mabbád inda alkönyvtárába kerül. A elérési utban 
+windows-on \\ míg Linuxon és MacOS alatt / tartalmaz. A perjel után lévő mappa egy almappája az előte lévő mappának. A fájlrendszerben a **cd** 
+parancs segitségével lehet az utána írt könyvtárba fog minket dobni. Az elérési út lehet abszulut és reatív az előbbi azt jelzi hogy az egész elérési 
+utat az elejétől kezdve végig írjuk míg az utobbi azt hogy az aktuális mappához viszonitva adjuk meg az hová szertnék menni. A '..' a szülő könyvtárat
+jelőli. 
 ## Licens
 Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
 További részletekért tekintsd meg a LICENSE fájlt.
