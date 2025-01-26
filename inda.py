@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/python3
 # verzió: alfa 2.1
-# Script neve: myscript.sh
+# Script neve: inda.py
 # Copyright (C) 2025 Pákozdi Bence
 #
 # Ez a program szabad szoftver: terjeszthető és/vagy módosítható a
@@ -34,7 +34,6 @@ def get_config_folder():
     else:  # Linux (vagy egyéb Unix rendszerek)
         # A szabványos .config könyvtárat használja
         return os.path.join(os.path.expanduser("~"), ".config", "inda")
-
 
 
 CONFIG_FOLDER = get_config_folder()
