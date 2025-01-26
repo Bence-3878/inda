@@ -16,9 +16,8 @@
 # Ha nem, látogass el a <https://www.gnu.org/licenses/> oldalra.
 
 import os
-import platform
 import sys
-
+import platform
 import requests
 from bs4 import BeautifulSoup
 
