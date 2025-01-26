@@ -42,33 +42,39 @@ pip install bs4 requests
 
 A script legfontosabb és központi parancsa az alábbi:
 ```bash
-python inda.py upload [files]
+python $HOME\inda\inda.py upload [files]
 ```
 A projekt könyvtárában adható ki a fenti formában. A **[files]** helyére a feltölteni kivánt fájlokat kell felsorolni.\
 Az első használat folyamán kérni fogja az email cím-jelszó párost, és a feltöltési beállításokat. Az alapértelmezett beállítások 
 az AnimeDrive szerkesztőinek készültek, mindenki más számára nem ajánlott a használata.
 
 ```bash
-python inda.py config 
+python $HOME\inda\inda.py config 
 ```
 
 parancs segítségével bármikor modosítani lehet a config-ot
 
 ```bash
-python inda.py reset
+python $HOME\inda\inda.py reset
 ```
 
 az egész programot alaphelyzetbe állítja
 
 ## Terminál használat alapok
-Igyekszek általános leírást adni az összes támogatott platformra, az esetleges különbségeket majd külön jelzem. Balról jobbra először a 
-felhasználó amivel akituálisan be vagyunk jelentkezve, utána az aktuális mappa elérési útja ahol jelenleg a fájl rendszerben tartózkodunk.
-Mindig valamelyik mappa van megnyitva alapértelmezés szerint a terminál megnyitásakor a saját gyökér könyvtáradba kerülsz ahonnan a jól 
-ismert mappák mint a képek, dokumentummok, stb. nyílik. A script amennyiben mindent jól hajttotál végre a saját mappád inda alkönyvtárába 
-kerül. Az elérési útban windows-on \\ míg Linuxon és MacOS alatt / tartalmaz. A perjel után lévő mappa egy almappája az előtte lévő mappának.
-A fájlrendszerben a **cd** parancs segitségével lehet az utána írt könyvtárba fog minket dobni. Az elérési út lehet abszólut és relatív az 
-előbbi azt jelzi, hogy az egész elérési utat az elejétől kezdve végig írjuk, míg az utóbbi azt, hogy az aktuális mappához víszonyitva adjuk 
-meg azt hová szertnénk menni. A '..' a szülő könyvtárat jelöli. 
+Igyekszek általános leírást adni az összes támogatott platformra, az esetleges különbségeket majd külön jelzem. Windows-on csak az aktuális 
+mappa elérési útja szerepel, ahol most is vagyunk. Míg linuxon és Mac-en először balról jobbra haladva a _felhasználónév@gépnév_ látszik,
+amivel akituálisan be vagyunk jelentkezve, és végül a mappa elérési útja, ahol jelenleg a fájl rendszerben tartózkodunk.
+Mindig valamelyik mappa van megnyitva alapértelmezett szerint. A terminál megnyitásakor a saját gyökér könyvtáradba kerülsz, ahonnan a jól 
+ismert mappák, mint a képek, dokumentummok, stb. nyílik. A sáját mappa elérési útját a `$HOME` környezeti változó is tertalmazza. 
+A script, amennyiben mindent jól hajttotál végre a saját mappád inda alkönyvtárába 
+kerül. Az elérési útban windows-on \\ jelet, míg Linuxon és MacOS alatt / jelet tartalmaz.\
+A fájlrendszerben a `cd` parancs segitségével lehet nagigálni. 
+```bash
+cd [elérési út]
+```
+Az elérési út lehet abszólut és relatív. Az 
+előbbi azt jelenti, hogy az egész elérési utat az elejétől kezdve végig írjuk, míg az utóbbi azt, hogy az aktuális mappához víszonyitva adjuk 
+meg azt, hogy hová szertnénk menni. A `..` a szülő könyvtárat jelöli. 
 ## Licens
 Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
 További részletekért tekintsd meg a LICENSE fájlt.
