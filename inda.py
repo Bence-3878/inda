@@ -16,8 +16,9 @@
 # Ha nem, látogass el a <https://www.gnu.org/licenses/> oldalra.
 
 import os
-import sys
 import platform
+import sys
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -355,24 +356,51 @@ def list_inda(profil):
 def list_inda_my():
     pass
 
+
+def help(nev):
+    if nev.endswith("inda.py"):
+        print("Használat:")
+        print("  python inda.py [parancs] [opciók]")
+        print("")
+        print("Parancsok:")
+        print("  version            - Verzió információ.")
+        print("  reset              - Beállítások visszaállítása alapértelmezettre.")
+        print("  update             - Fájlok frissítése a legújabb verzióra.")
+        print("  config             - A Inda konfigurációs beállításainak kezelése.")
+        print("  list [profil]      - Videók listája. Ha nincs profil megadva, a saját videók listája.")
+        print("  upload [fájlok]    - Videók feltöltése.")
+        print("  help               - Segítség megjelenítése.")
+
+    if nev.endswith("videa.py"):
+        print("Használat:")
+        print("  python videa.py [parancs] [opciók]")
+        print("")
+        print("Parancsok:")
+        print("  reset              - Beállítások visszaállítása alapértelmezettre.")
+        print("  config             - A Videa konfigurációs beállításainak kezelése.")
+        print("  upload [fájlok]    - Videók feltöltése.")
+        print("  help               - Segítség megjelenítése.")
+
+    if nev.endswith("all.py"):
+        print("Használat:")
+        print("  python all.py [parancs] [opciók]")
+        print("")
+        print("Parancsok:")
+        print("  config             - Mind az Inda, mind a Videa konfigurációs beállításainak kezelése.")
+        print("  upload [fájlok]    - Videók feltöltése mind az Inda, mind a Videa felületére.")
+        print("  help               - Segítség megjelenítése.")
+
 def main():
     if sys.argv[1] == "version":
         print("alfa 2.1")
 
-    if sys.argv[1] == "reset":
-        config_path = os.path.join(CONFIG_FOLDER, "config")
-        auth_path = os.path.join(CONFIG_FOLDER, "auth")
-        if os.path.isfile(config_path):
-            os.remove(config_path)
-        if os.path.isfile(auth_path):
-            os.remove(auth_path)
-        return 0
     if sys.argv[1] == "update":
         inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
         os.chdir(inda_folder_path)
         os.system("git pull >nul 2>&1")
         return 0
     if sys.argv[1] == "help":
+        help(sys.argv[0])
         return 0
 
     if sys.argv[0].endswith("inda.py"):
@@ -385,6 +413,14 @@ def main():
             else:
                 list_inda(sys.argv[2])
             return 0
+        if sys.argv[1] == "reset":
+            config_inda_path = os.path.join(CONFIG_FOLDER, "config_inda")
+            auth_inda_path = os.path.join(CONFIG_FOLDER, "auth_inda")
+            if os.path.isfile(config_inda_path):
+                os.remove(config_inda_path)
+            if os.path.isfile(auth_inda_path):
+                os.remove(auth_inda_path)
+            return 0
         if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
             upload_inda(sys.argv)
             return 0
@@ -393,6 +429,13 @@ def main():
         if sys.argv[1] == "config":
             config_videa()
             return 0
+        if sys.argv[1] == "reset":
+            auth_videa_path = os.path.join(CONFIG_FOLDER, "auth_videa")
+            config_videa_path = os.path.join(CONFIG_FOLDER, "config_videa")
+            if os.path.isfile(config_videa_path):
+                os.remove(config_videa_path)
+            if os.path.isfile(auth_videa_path):
+                os.remove(auth_videa_path)
         if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
             upload_videa(sys.argv)
             return 0
@@ -402,6 +445,19 @@ def main():
             config_inda()
             config_videa()
             return 0
+        if sys.argv[1] == "reset":
+            config_inda_path = os.path.join(CONFIG_FOLDER, "config_inda")
+            auth_inda_path = os.path.join(CONFIG_FOLDER, "auth_inda")
+            config_videa_path = os.path.join(CONFIG_FOLDER, "config_videa")
+            auth_videa_path = os.path.join(CONFIG_FOLDER, "auth_videa")
+            if os.path.isfile(config_inda_path):
+                os.remove(config_inda_path)
+            if os.path.isfile(auth_inda_path):
+                os.remove(auth_inda_path)
+            if os.path.isfile(config_videa_path):
+                os.remove(config_videa_path)
+            if os.path.isfile(auth_videa_path):
+                os.remove(auth_videa_path)
         if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
             upload_inda(sys.argv)
             upload_videa(sys.argv)
