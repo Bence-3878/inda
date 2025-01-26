@@ -75,6 +75,13 @@ cd [elérési út]
 Az elérési út lehet abszólut és relatív. Az 
 előbbi azt jelenti, hogy az egész elérési utat az elejétől kezdve végig írjuk, míg az utóbbi azt, hogy az aktuális mappához víszonyitva adjuk 
 meg azt, hogy hová szertnénk menni. A `..` a szülő könyvtárat jelöli. 
+## Pár tipp a terminál használatához
+- az itt lévő parancsokat másold ki és illeszd be a terminálba
+- minden legépelt sor vagy parancs után üss egy entert.
+- a parancsokat egyenként kell kiadni
+- a telepítésnél minden esetben üss [Y]es-t
+- a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
+  Igyekszek általános leírást adni az összes támogatott platformra, az esetleges különbségeket majd külön jelzem. Windows-on csak az aktuális
 ## Licens
 Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
 További részletekért tekintsd meg a LICENSE fájlt.
