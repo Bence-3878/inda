@@ -27,17 +27,6 @@ Repozitori klónozása:
 git clone https://github.com/Bence-3878/inda.git
 ```
 
-### Linux
-Nyisd meg a neked szimpatikus terminál emulátort\
-Szükséges programok telepítése:
-```bash
-apt update
-apt install git
-```
-A script müködéséhez szükséges az alábbi python csomagok telepítése:
-```bash
-pip install bs4 requests
-```
 ## Használat
 
 A script legfontosabb és központi parancsa az alábbi:
