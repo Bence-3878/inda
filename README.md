@@ -1,15 +1,11 @@
 # Automata indavideo feltőltő script
-Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldalára automatikusan feltölti a számitógépen tárolt 
-videó fájlokat. Python programozási nyelven íródott parancssoros alkalmazás, ezáltal nincs grafikus felület hozzá. 
-Multiplatformos, tehát mind linuxon, mind windowson müködik. Nagy esélyel MacOS alatt is müködik, sajnos hardver 
-hiányában ezt nem tudtam tesztelni.
+Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldalára automatikusan feltölti a számitógépen tárolt videó fájlokat. Python programozási nyelven íródott parancssoros alkalmazás, tehát nincs grafikus felület hozzá. Multiplatformos, tehát mind linuxon, mind windowson müködik. Nagy esélyel MacOS alatt is müködik, sajnos hardver hiányában ezt nem tudtam tesztelni.
 
 ---
 
 ## Telepítés
 ### Windows
-A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen még telepítve akkor 
-[innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
+A script használhatához a Windows Terminal nevű programot ajánlom. Ha nincsen még telepítve akkor [innen](https://apps.microsoft.com/detail/9N0DX20HK701?hl=neutral&gl=HU&ocid=pdpshare) tudod letölteni.
 
 Terminálba add ki az alábbi parancsokat:\
 Szükséges programok telepítése:
