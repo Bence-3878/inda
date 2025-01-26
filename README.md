@@ -2,13 +2,6 @@
 Ez a projekt ahogy a neve is mutatja az [indavideo](https://indavideo.hu/) oldalára automatikusan feltölti a számitógépen tárolt videó fájlokat. Python programozási nyelven íródott parancssoros alkalmazás, tehát nincs grafikus felület hozzá. Multiplatformos, tehát mind linuxon, mind windowson müködik. Nagy esélyel MacOS alatt is müködik, sajnos hardver hiányában ezt nem tudtam tesztelni.
 
 ---
-## Pár tipp a terminál használatához
-- az itt lévő parancsokat másold ki és illeszd be a terminálba
-- minden legépelt sor vagy parancs után üss egy entert.
-- a parancsokat egyenként kell kiadni
-- a telepítésnél minden esetben üss [Y]es-t
-- cd parancs segitségével lehet parancssorban navigálni a fájl rendszerben
-- a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
 
 ## Telepítés
 ### windows
@@ -30,11 +23,30 @@ git clone https://github.com/Bence-3878/inda.git
 ```
 ## Használat
 
-az egész script használata az alábbi parancs
-a terminál megnyitásakor a
+Az egész script használata az alábbi parancs:
+Nyisd meg a terminált, és futtasd az alábbi parancsot:
+
 ```bash
 python .\inda\inda.py upload [files]
 ```
+
+- **[files]** helyére a feltölteni kívánt videófájl(ok) pontos elérési útját kell beírni. Ha több fájlt szeretnél
+  feltölteni egyszerre, azokat szóközökkel elválasztva add meg. Példa:
+  ```bash
+  python .\inda\inda.py upload video1.mp4 video2.mp4
+  ```
+- Ügyelj arra, hogy a fájlnevek és elérési utak helyesen legyenek megadva. Ha a videók egy másik mappában találhatók,
+  akkor használd a relatív vagy abszolút útvonalukat.
+- Sikeres futtatás után a script automatikusan feltölti az összes megadott videót az Indavideo oldalára.
+
+## Pár tipp a terminál használatához
+- az itt lévő parancsokat másold ki és illeszd be a terminálba
+- minden legépelt sor vagy parancs után üss egy entert.
+- a parancsokat egyenként kell kiadni
+- a telepítésnél minden esetben üss [Y]es-t
+- cd parancs segitségével lehet parancssorban navigálni a fájl rendszerben
+- a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
+
 ## Licens
 Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
 További részletekért tekintsd meg a LICENSE fájlt.
