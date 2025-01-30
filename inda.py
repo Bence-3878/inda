@@ -256,9 +256,9 @@ def upload_videa(files):
     if response.status_code != 200:
         print("Sikertelen bejelentkezés.")
         exit(16)
-    if response.json()["code"] != 0:
-        print("Hibás felhasználónév vagy jelszó")
-        exit(17)
+    if response.json()["response"]["code"] != 0:
+        print(response.json()["response"]["reason"])
+        exit(17*10+response.json()["response"]["code"])
 
     response = sess.get("https://videa.hu/")
     soup = BeautifulSoup(response.text, "html.parser")
