@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# verzió: alfa 2.1
+# verzió: beta 1.5
 # Script neve: inda.py
 # Copyright (C) 2025 Pákozdi Bence
 #
@@ -40,16 +40,16 @@ CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
-def upload_inda(files):
+def upload(files):
     # A konfigurációs mappa létrehozása, ha nem létezik
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    auth_path = os.path.join(CONFIG_FOLDER, "auth_inda")
-    config_path = os.path.join(CONFIG_FOLDER, "config_inda")
+    auth_path = os.path.join(CONFIG_FOLDER, "auth")
+    config_path = os.path.join(CONFIG_FOLDER, "config")
     username, password = None, None
 
     # Ellenőrizzük, hogy létezik-e a konfigurációs fájl, ha nem, akkor létrehozzuk
     if not os.path.isfile(config_path):
-        config_inda()
+        config()
     try:
         # Beolvassuk a konfigurációs fájlt, hogy lekérjük a címkéket és láthatósági beállításokat
         with open(config_path, "rb") as f:
@@ -210,64 +210,10 @@ def upload_inda(files):
             print("Hiba: Az input mezőben nincs 'value' attribútum.")
     return
 
-def upload_videa(files):
+
+def config():
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    auth_path = os.path.join(CONFIG_FOLDER, "auth_videa")
-    config_path = os.path.join(CONFIG_FOLDER, "config_videa")
-    username, password = None, None
-
-
-    if not os.path.isfile(config_path):
-        config_videa()
-    try:
-        with open(config_path, "rb") as f:
-            pass
-    except Exception as e:
-        print(f"Nem várt hiba történt: {e}")
-        exit(12)
-
-
-    if not os.path.isfile(auth_path):
-        print("felhasználónév:")
-        username = input()
-        print("jelszó:")
-        password = input()
-        with open(auth_path, "wb") as f:
-            f.write(f"{username}\n{password}".encode())
-    try:
-        with open(auth_path, "rb") as f:
-            username, password = f.read().decode().strip().split("\n")
-    except Exception as e:
-        print(f"Nem várt hiba történt: {e}")
-        exit(13)
-    if not username or not password:
-        print("Hiányzó hitelesítő adatok.")
-        exit(14)
-
-    try:
-        response = sess.get("https://videa.hu/belepes")
-        response = sess.post("https://videa.hu/interface?logcmd=tryLoginByRequest",
-                                json={"cmd":"tryLoginByRequest","userid":username,"password":password}
-                                 )
-    except requests.exceptions.RequestException as e:
-        print(f"HTTP kérés hiba: {e}")
-        exit(15)
-    if response.status_code != 200:
-        print("Sikertelen bejelentkezés.")
-        exit(16)
-    if response.json()["response"]["code"] != 0:
-        print(response.json()["response"]["reason"])
-        exit(17*10+response.json()["response"]["code"])
-
-    response = sess.get("https://videa.hu/")
-    soup = BeautifulSoup(response.text, "html.parser")
-
-
-
-
-def config_inda():
-    os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    config_path = os.path.join(CONFIG_FOLDER, "config_inda")
+    config_path = os.path.join(CONFIG_FOLDER, "config")
     if os.path.isfile(config_path):
         n = None
         while n != "3":
@@ -329,31 +275,6 @@ def config_inda():
             else:
                 f.write("Anime,\n0\n1".encode())
 
-def config_videa():
-    os.makedirs(CONFIG_FOLDER, exist_ok=True)
-    config_path = os.path.join(CONFIG_FOLDER, "config_videa")
-    if os.path.isfile(config_path):
-        n = None
-        while n != "3":
-            print("(1) list\n(2) edit\n(3) exit")
-            n = input()
-            if n == "1":
-                with open(config_path, "rb") as f:
-                    pass
-    else:
-        with open(config_path, "wb") as f:
-            pass
-
-def list_inda(profil):
-    response = sess.get(f"https://indavideo.hu/profile/{profil}/all-videos#")
-    if response.status_code != 200:
-        exit(18)
-
-    return
-
-def list_inda_my():
-    pass
-
 
 def help(nev):
     if nev.endswith("inda.py"):
@@ -369,33 +290,10 @@ def help(nev):
         print("  upload [fájlok]    - Videók feltöltése.")
         print("  help               - Segítség megjelenítése.")
 
-    if nev.endswith("videa.py"):
-        print("Használat:")
-        print("  python videa.py [parancs] [opciók]")
-        print("")
-        print("Parancsok:")
-        print("  version            - Verzió információ.")
-        print("  reset              - Beállítások visszaállítása alapértelmezettre.")
-        print("  update             - Fájlok frissítése a legújabb verzióra.")
-        print("  config             - A Videa konfigurációs beállításainak kezelése.")
-        print("  upload [fájlok]    - Videók feltöltése.")
-        print("  help               - Segítség megjelenítése.")
-
-    if nev.endswith("all.py"):
-        print("Használat:")
-        print("  python all.py [parancs] [opciók]")
-        print("")
-        print("Parancsok:")
-        print("  version            - Verzió információ.")
-        print("  reset              - Beállítások visszaállítása alapértelmezettre.")
-        print("  update             - Fájlok frissítése a legújabb verzióra.")
-        print("  config             - Mind az Inda, mind a Videa konfigurációs beállításainak kezelése.")
-        print("  upload [fájlok]    - Videók feltöltése mind az Inda, mind a Videa felületére.")
-        print("  help               - Segítség megjelenítése.")
 
 def main():
     if sys.argv[1] == "version":
-        print("alfa 2.1")
+        print("beta 1.5")
 
     if sys.argv[1] == "update":
         inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
@@ -408,63 +306,21 @@ def main():
 
     if sys.argv[0].endswith("inda.py"):
         if sys.argv[1] == "config":
-            config_inda()
+            config()
             return 0
-        if sys.argv[1] == "list":
-            if len(sys.argv) < 3:
-                list_inda_my()
-            else:
-                list_inda(sys.argv[2])
-            return 0
+
         if sys.argv[1] == "reset":
-            config_inda_path = os.path.join(CONFIG_FOLDER, "config_inda")
-            auth_inda_path = os.path.join(CONFIG_FOLDER, "auth_inda")
+            config_inda_path = os.path.join(CONFIG_FOLDER, "config")
+            auth_inda_path = os.path.join(CONFIG_FOLDER, "auth")
             if os.path.isfile(config_inda_path):
                 os.remove(config_inda_path)
             if os.path.isfile(auth_inda_path):
                 os.remove(auth_inda_path)
             return 0
         if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
-            upload_inda(sys.argv)
+            upload(sys.argv)
             return 0
 
-    if sys.argv[0].endswith("videa.py"):
-        if sys.argv[1] == "config":
-            config_videa()
-            return 0
-        if sys.argv[1] == "reset":
-            auth_videa_path = os.path.join(CONFIG_FOLDER, "auth_videa")
-            config_videa_path = os.path.join(CONFIG_FOLDER, "config_videa")
-            if os.path.isfile(config_videa_path):
-                os.remove(config_videa_path)
-            if os.path.isfile(auth_videa_path):
-                os.remove(auth_videa_path)
-        if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
-            upload_videa(sys.argv)
-            return 0
-
-    if sys.argv[0].endswith("all.py"):
-        if sys.argv[1] == "config":
-            config_inda()
-            config_videa()
-            return 0
-        if sys.argv[1] == "reset":
-            config_inda_path = os.path.join(CONFIG_FOLDER, "config_inda")
-            auth_inda_path = os.path.join(CONFIG_FOLDER, "auth_inda")
-            config_videa_path = os.path.join(CONFIG_FOLDER, "config_videa")
-            auth_videa_path = os.path.join(CONFIG_FOLDER, "auth_videa")
-            if os.path.isfile(config_inda_path):
-                os.remove(config_inda_path)
-            if os.path.isfile(auth_inda_path):
-                os.remove(auth_inda_path)
-            if os.path.isfile(config_videa_path):
-                os.remove(config_videa_path)
-            if os.path.isfile(auth_videa_path):
-                os.remove(auth_videa_path)
-        if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
-            upload_inda(sys.argv)
-            upload_videa(sys.argv)
-            return 0
 
     return 1
 
