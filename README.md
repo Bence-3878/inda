@@ -54,14 +54,13 @@ python $HOME\inda\inda.py update
 
 A program frissitése
 ## Terminál használat alapok
-Igyekszek általános leírást adni az összes támogatott platformra, az esetleges különbségeket majd külön jelzem. Windows-on csak az aktuális 
 mappa elérési útja szerepel, ahol most is vagyunk. Míg linuxon és Mac-en először balról jobbra haladva a _felhasználónév@gépnév_ látszik,
-amivel akituálisan be vagyunk jelentkezve, és végül a mappa elérési útja, ahol jelenleg a fájl rendszerben tartózkodunk.
-Mindig valamelyik mappa van megnyitva alapértelmezett szerint. A terminál megnyitásakor a saját gyökér könyvtáradba kerülsz, ahonnan a jól 
-ismert mappák, mint a képek, dokumentummok, stb. nyílik. A sáját mappa elérési útját a `$HOME` környezeti változó is tertalmazza. 
-A script, amennyiben mindent jól hajttotál végre a saját mappád inda alkönyvtárába 
-kerül. Az elérési útban windows-on \\ jelet, míg Linuxon és MacOS alatt / jelet tartalmaz.\
-A fájlrendszerben a `cd` parancs segitségével lehet nagigálni. 
+  amivel akituálisan be vagyunk jelentkezve, és végül a mappa elérési útja, ahol jelenleg a fájl rendszerben tartózkodunk.
+  Mindig valamelyik mappa van megnyitva alapértelmezett szerint. A terminál megnyitásakor a saját gyökér könyvtáradba kerülsz, ahonnan a jól 
+  ismert mappák, mint a képek, dokumentummok, stb. nyílik. A sáját mappa elérési útját a `$HOME` környezeti változó is tertalmazza. 
+  A script, amennyiben mindent jól hajttotál végre a saját mappád inda alkönyvtárába 
+  kerül. Az elérési útban windows-on \\ jelet, míg Linuxon és MacOS alatt / jelet tartalmaz.\
+  A fájlrendszerben a `cd` parancs segitségével lehet nagigálni. 
 ```bash
 cd [elérési út]
 ```
@@ -77,5 +76,5 @@ cd [elérési út]
 - a tab billentyű ki egésziti a mappa neveket windows alatt linux alatt a parancsokat is
   Igyekszek általános leírást adni az összes támogatott platformra, az esetleges különbségeket majd külön jelzem. Windows-on csak az aktuális
 ## Licens
-Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
+  Ez a program a GNU General Public License (GPL) 3. verziója alatt van licencelve.
 További részletekért tekintsd meg a LICENSE fájlt.
