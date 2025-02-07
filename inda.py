@@ -62,7 +62,7 @@ def upload(files):
 
     siker = False
     while not siker:
-        if not os.path.isfile(auth_path) or not siker:
+        if not os.path.isfile(auth_path):
             # Bekérjük a felhasználói hitelesítő adatokat
             print("Email Cím:")
             username = input()
