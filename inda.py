@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# verzió: beta 1.4
+# verzió: beta 1.5
 # Script neve: inda.py
 # Copyright (C) 2025 Pákozdi Bence
 #
@@ -40,18 +40,16 @@ CONFIG_FOLDER = get_config_folder()
 
 sess = requests.Session()
 
-
 def upload(files):
     # A konfigurációs mappa létrehozása, ha nem létezik
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
     auth_path = os.path.join(CONFIG_FOLDER, "auth")
-    username, password = None, None
     config_path = os.path.join(CONFIG_FOLDER, "config")
+    username, password = None, None
 
     # Ellenőrizzük, hogy létezik-e a konfigurációs fájl, ha nem, akkor létrehozzuk
     if not os.path.isfile(config_path):
         config()
-
     try:
         # Beolvassuk a konfigurációs fájlt, hogy lekérjük a címkéket és láthatósági beállításokat
         with open(config_path, "rb") as f:
@@ -212,6 +210,7 @@ def upload(files):
             print("Hiba: Az input mezőben nincs 'value' attribútum.")
     return
 
+
 def config():
     os.makedirs(CONFIG_FOLDER, exist_ok=True)
     config_path = os.path.join(CONFIG_FOLDER, "config")
@@ -222,7 +221,7 @@ def config():
             n = input()
             if n == "1":
                 with open(config_path, "rb") as f:
-                    tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+                    tags, isPrivate, isUnlisted = f.read().decode().strip().split("\n")
                 print(f"Címkék: {tags}\n")
                 if isPrivate == "1" and isUnlisted == "0":
                     print("Láthatoség: Privált")
@@ -233,7 +232,7 @@ def config():
 
             elif n == "2":
                 with open(config_path, "rb") as f:
-                    tags, isPrivate, isUnlisted= f.read().decode().strip().split("\n")
+                    tags, isPrivate, isUnlisted = f.read().decode().strip().split("\n")
                 print("Címkék: ")
                 tags = input()
                 print("Láthatoség: (1) Publikus\n"
@@ -277,29 +276,54 @@ def config():
                 f.write("Anime,\n0\n1".encode())
 
 
+def help(nev):
+    if nev.endswith("inda.py"):
+        print("Használat:")
+        print("  python inda.py [parancs] [opciók]")
+        print("")
+        print("Parancsok:")
+        print("  version            - Verzió információ.")
+        print("  reset              - Beállítások visszaállítása alapértelmezettre.")
+        print("  update             - Fájlok frissítése a legújabb verzióra.")
+        print("  config             - A Inda konfigurációs beállításainak kezelése.")
+        print("  list [profil]      - Videók listája. Ha nincs profil megadva, a saját videók listája.")
+        print("  upload [fájlok]    - Videók feltöltése.")
+        print("  help               - Segítség megjelenítése.")
+
 
 def main():
-    if sys.argv[1] == "reset":
-        config_path = os.path.join(CONFIG_FOLDER, "config")
-        auth_path = os.path.join(CONFIG_FOLDER, "auth")
-        if os.path.isfile(config_path):
-            os.remove(config_path)
-        if os.path.isfile(auth_path):
-            os.remove(auth_path)
-        return 0
+    if sys.argv[1] == "version":
+        print("beta 1.5")
+
     if sys.argv[1] == "update":
         inda_folder_path = os.path.join(os.path.expanduser("~"), "inda")
         os.chdir(inda_folder_path)
         os.system("git pull >nul 2>&1")
         return 0
-    if sys.argv[1] == "config":
-        config()
+    if sys.argv[1] == "help":
+        help(sys.argv[0])
         return 0
-    if len(sys.argv) < 3 or sys.argv[1] != "upload":
-        print("Használata: python inda.py upload [files]")
-        return 1
-    upload(sys.argv)
-    return 0
+
+    if sys.argv[0].endswith("inda.py"):
+        if sys.argv[1] == "config":
+            config()
+            return 0
+
+        if sys.argv[1] == "reset":
+            config_inda_path = os.path.join(CONFIG_FOLDER, "config")
+            auth_inda_path = os.path.join(CONFIG_FOLDER, "auth")
+            if os.path.isfile(config_inda_path):
+                os.remove(config_inda_path)
+            if os.path.isfile(auth_inda_path):
+                os.remove(auth_inda_path)
+            return 0
+        if len(sys.argv) >= 3 and (sys.argv[1] == "upload"):
+            upload(sys.argv)
+            return 0
+
+
+    return 1
+
 
 
 
